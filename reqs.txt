@@ -1,4 +1,4 @@
 django-rest-framework    #Building Rest APIs via Django
 boto3     #For connecting to dynamodb
 requests  #For creating requests : Create a New Device , Get Device , Get All Devices,
-
+dynamodb-json

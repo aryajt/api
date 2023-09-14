@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Device
+from .models import Devices_test
 
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Device
+        model = Devices_test
         fields = '__all__'

@@ -5,7 +5,7 @@ url = "http://localhost:8000/api/devices/create/"
 
 # Define the JSON payload for creating a device
 payload = {
-    "id": "111",
+    "id": "11",
     "deviceModel": "/devicemodels/id1",
     "name": "Sensor",
     "note": "Testing a sensor.",

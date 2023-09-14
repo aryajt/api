@@ -1,0 +1,52 @@
+service: arya-django
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  region: eu-north-1
+  runtime: python3.9 
+  deploymentBucket:
+     name: django-bucket-arya
+  environment:
+    DJANGO_SETTINGS_MODULE: api_task.settings
+    DYNAMODB_TABLE: Devices_test 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "Fn::GetAtt": [DynamoDBTable, Arn]
+
+functions:
+  django:
+    handler: wsgi.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+resources:
+  Resources:
+    DynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+
